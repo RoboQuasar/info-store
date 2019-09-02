@@ -3,7 +3,3 @@
   align-items: center;
   justify-content: flex-end;
 }
-
-.actionButton {
-  composes: button-reset from 'styleguide.module.css';
-}
