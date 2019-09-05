@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+import ListGroup from 'react-bootstrap/ListGroup';
+
+import styles from './index.module.css';
+
 interface IState {
   items: {id: string, label: string}[],
   hasErrored: boolean,
@@ -45,13 +49,17 @@ class ProductsList extends Component {
     }
 
     return (
-      <ul>
+      <ListGroup className={styles.listGroup}>
         {this.state.items.map((item) => (
-          <li key={item.id}>
+          <ListGroup.Item
+            className={styles.listItem}
+            key={item.id}
+            variant="secondary"
+          >
             {item.label}
-          </li>
+          </ListGroup.Item>
         ))}
-      </ul>
+      </ListGroup>
     );
   }
 }

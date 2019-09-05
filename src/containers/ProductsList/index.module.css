@@ -1,0 +1,13 @@
+.listGroup {
+  margin-top: 30px;
+}
+
+.listItem {
+  min-width: 250px;
+  max-width: 600px;
+  margin: 0 auto 10px;
+}
+
+.listItem:last-child {
+  margin-bottom: 0;
+}
