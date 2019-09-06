@@ -9,7 +9,7 @@ class Header extends PureComponent {
   render() {
     return (
       <header className={ styles.headerContainer }>
-        <Dropdown drop="down">
+        <Dropdown drop="left">
           <Dropdown.Toggle
             id="login-open"
             variant="info"
