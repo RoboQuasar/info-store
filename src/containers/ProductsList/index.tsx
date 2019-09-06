@@ -1,56 +1,39 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import { Action } from 'redux';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { ThunkDispatch } from 'redux-thunk';
+
+import { itemsFetchData } from '../../thunks';
+
+import { ListItem, isLoadingType, hasErroredType, AppState } from '../../store/types';
 
 import styles from './index.module.css';
 
-interface IState {
-  items: {id: string, label: string}[],
-  hasErrored: boolean,
-  isLoading: boolean,
+interface ProductsListInterfaceProps {
+  fetchData: (url: string) => void;
+  items: ListItem[],
+  hasErrored: isLoadingType,
+  isLoading: hasErroredType,
 }
 
-class ProductsList extends Component {
-  state:IState = {
-    items: [],
-    hasErrored: false,
-    isLoading: false,
-  }
-
+class ProductsList extends Component<ProductsListInterfaceProps> {
   componentDidMount() {
-    this.fetchData('http://5826ed963900d612000138bd.mockapi.io/items');
-  }
-
-  fetchData(url: string) {
-    this.setState({ isLoading: true });
-
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-
-        this.setState({ isLoading: false });
-
-        return response;
-      })
-      .then((response) => response.json())
-      .then((items) => this.setState({ items }))
-      .catch(() => this.setState({ hasErrored: true }));
+    this.props.fetchData('http://5826ed963900d612000138bd.mockapi.io/items');
   }
 
   render() {
-    if (this.state.hasErrored) {
+    if (this.props.hasErrored) {
       return <p>Sorry! There was an error loading the items</p>;
     }
 
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
 
     return (
       <ListGroup className={styles.listGroup}>
-        {this.state.items.map((item) => (
+        {this.props.items.map((item) => (
           <ListGroup.Item
             className={styles.listItem}
             key={item.id}
@@ -64,4 +47,18 @@ class ProductsList extends Component {
   }
 }
 
-export default ProductsList;
+const mapStateToProps = (state:AppState) => {
+  return {
+    items: state.listItems.items,
+    hasErrored: state.listItems.hasErrored,
+    isLoading: state.listItems.isLoading
+  };
+};
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<AppState, void, Action>) => {
+  return {
+    fetchData: (url: string) => dispatch(itemsFetchData(url))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsList);

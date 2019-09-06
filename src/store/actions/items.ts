@@ -1,13 +1,4 @@
-type ActionsTypes = {
-  type: 'ITEMS_HAS_ERRORED';
-  hasErrored: boolean;
-} | {
-  type: 'ITEMS_IS_LOADING',
-  isLoading: boolean;
-} | {
-  type: 'ITEMS_FETCH_DATA_SUCCESS';
-  items: { id: string; label: string; };
-};
+import { ActionsTypes, ListItem } from '../types';
 
 function inferLiteral<U, T extends U>(value: T): T {
   return value;
@@ -27,8 +18,7 @@ export const itemsIsLoading = (bool: boolean):ActionsTypes => ({
   isLoading: bool
 });
 
-export const itemsFetchDataSuccess = (items: { id: string; label: string; }):ActionsTypes => ({
+export const itemsFetchDataSuccess = (items: ListItem[]):ActionsTypes => ({
   type: inferStringLiteral('ITEMS_FETCH_DATA_SUCCESS'),
   items
 });
-
